@@ -197,7 +197,13 @@ export const microsoftCalendarApi = {
              * @private
              * @returns {void}
              */
-            function handleAuth({ data }: any) {
+            function handleAuth(event: MessageEvent) {
+                if (event.origin !== window.location.origin) {
+                    return;
+                }
+
+                const { data } = event;
+
                 if (!data || data.type !== 'ms-login') {
                     return;
                 }

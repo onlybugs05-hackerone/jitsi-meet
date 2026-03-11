@@ -14,7 +14,12 @@ function authorize(authUrl: string): Promise<string> {
     return new Promise(resolve => {
         // eslint-disable-next-line prefer-const
         let popup: any;
-        const handleAuth = ({ data }: { data: { type: string; url: string; windowName: string; }; }) => {
+        const handleAuth = (event: MessageEvent) => {
+            if (event.origin !== window.location.origin) {
+                return;
+            }
+            const { data } = event;
+
             if (data && data.type === 'dropbox-login' && data.windowName === windowName) {
                 if (popup) {
                     popup.close();
